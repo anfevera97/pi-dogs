@@ -12,6 +12,7 @@ const getDogHandler = async (req, res) => {
 			});
 			if (results.length) {
 				res.status(200).json(results);
+				console.log(results);
 			} else {
 				res.status(400).json({ error: `Dog Breed ${name} not found` });
 			}

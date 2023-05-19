@@ -33,3 +33,22 @@ export const CLEAR_DETAIL = 'CLEAR_DETAIL';
 export const clearDetail = () => {
 	return { type: CLEAR_DETAIL };
 };
+
+/////////////
+export const SEARCH = 'SEARCH';
+export const onSearch = (query) => {
+	return async function (dispatch) {
+		const response = await axios.get(`${server}/dog?name=${query}`);
+		console.log(response);
+		dispatch({
+			type: SEARCH,
+			payload: response.data,
+		});
+	};
+};
+
+///////////////
+export const CLEAR_SEARCH = 'CLEAR_SEARCH';
+export const clearSearch = () => {
+	return { type: CLEAR_SEARCH };
+};

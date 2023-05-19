@@ -3,9 +3,8 @@ import Card from '../DogCard/Card';
 import style from './CardsContainter.module.css';
 import { useSelector } from 'react-redux';
 
-const CardsContainter = ({ currentPage, resultsXPage }) => {
+const CardsContainter = ({ currentPage, resultsXPage, search }) => {
 	const dogs = useSelector((state) => state.dogs);
-
 	const [page, setPage] = useState(currentPage);
 
 	const totalPages = Math.ceil(dogs.length / resultsXPage);
@@ -51,20 +50,31 @@ const CardsContainter = ({ currentPage, resultsXPage }) => {
 					Next
 				</button>
 			</div>
-			{currentResults.map((dog) => {
-				return (
-					<div className={style.cardscontainer}>
-						<Card
-							key={dog.id}
-							id={dog.id}
-							image={dog.image}
-							name={dog.name}
-							temperament={dog.temperament}
-							weight={dog.weight}
-						/>
-					</div>
-				);
-			})}
+			{search.length
+				? search.map((dog) => (
+						<div className={style.cardscontainer}>
+							<Card
+								key={dog.id}
+								id={dog.id}
+								image={dog.image}
+								name={dog.name}
+								temperament={dog.temperament}
+								weight={dog.weight}
+							/>
+						</div>
+				  ))
+				: currentResults.map((dog) => (
+						<div className={style.cardscontainer}>
+							<Card
+								key={dog.id}
+								id={dog.id}
+								image={dog.image}
+								name={dog.name}
+								temperament={dog.temperament}
+								weight={dog.weight}
+							/>
+						</div>
+				  ))}
 		</div>
 	);
 };

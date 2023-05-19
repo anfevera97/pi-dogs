@@ -1,10 +1,18 @@
-import { GET_DOGS, GET_DOG, SET_PAGE, CLEAR_DETAIL } from './actions';
+import {
+	GET_DOGS,
+	GET_DOG,
+	SET_PAGE,
+	CLEAR_DETAIL,
+	SEARCH,
+	CLEAR_SEARCH,
+} from './actions';
 
 const initialState = {
 	dogs: [],
 	dogsDetail: [],
 	startPage: 1,
 	resultsXPage: 8,
+	filteredDogs: [],
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -31,6 +39,18 @@ const rootReducer = (state = initialState, action) => {
 			return {
 				...state,
 				dogsDetail: {},
+			};
+
+		case SEARCH:
+			return {
+				...state,
+				filteredDogs: action.payload,
+			};
+
+		case CLEAR_SEARCH:
+			return {
+				...state,
+				filteredDogs: [],
 			};
 		default:
 			return { ...state };
