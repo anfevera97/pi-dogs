@@ -1,21 +1,18 @@
 .container {
 	margin-top: 4%;
 	display: grid;
-	grid-template-columns: repeat(4, 0.7fr);
+	grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+	gap: 20px;
 	border-radius: 15px;
 	justify-items: center;
 }
 
 .pagContainter {
-	position: static;
-	bottom: 0px;
+	position: relative;
+	top: 50%;
 	display: flex;
 	justify-items: center;
 	height: min-content;
-}
-.pageNumbersContainer {
-	margin-top: 10px;
-	/* display: flex; */
 }
 
 .pageNumber {
@@ -33,5 +30,5 @@
 	cursor: pointer;
 	color: #fff;
 	background-color: #333;
-	border-radius: 15px;
+	border-radius: 100px;
 }

@@ -15,7 +15,7 @@ export const GET_DOG = 'GET_DOG';
 export const getDogById = (id) => {
 	return async function (dispatch) {
 		const response = await axios.get(`${server}/dog/${id}`);
-		dispatch({ type: GET_DOG, payload: response.data });
+		dispatch({ type: GET_DOG, payload: response.data[0] });
 	};
 };
 
@@ -26,4 +26,10 @@ export const setPage = (page) => {
 		type: SET_PAGE,
 		payload: page,
 	};
+};
+
+/////////////////
+export const CLEAR_DETAIL = 'CLEAR_DETAIL';
+export const clearDetail = () => {
+	return { type: CLEAR_DETAIL };
 };

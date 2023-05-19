@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import axios from 'axios';
 import style from './Form.module.css';
 
@@ -24,37 +24,47 @@ const Form = () => {
 	const changeHandler = (event) => {
 		const property = event.target.name;
 		const value = event.target.value;
-		validate({ ...form, [property]: value });
+		if (property === 'image') {
+			validateImageURL(value);
+		} else if (property === 'name' || property === 'temperament') {
+			validateRequired(property, value);
+		}
 		setForm({ ...form, [property]: value });
 	};
 
-	const validate = (form) => {
-		//Name cant have numbers
-		if (!form.name) setErrors({ ...errors, name: 'Must have name' });
-		if (/^[^0-9]*$/.test(form.name)) {
-			setErrors({ ...errors, name: '' });
+	const validateRequired = (property, value) => {
+		if (!value) {
+			setErrors({ ...errors, [property]: 'This field is required' });
 		} else {
-			setErrors({ ...errors, name: "Name can't contain numbers" });
+			setErrors({ ...errors, [property]: '' });
 		}
+	};
 
-		//Temperaments can't have numbers
-		if (/^[^0-9]*$/.test(form.temperament)) {
-			setErrors({ ...errors, temperament: '' });
+	const validateImageURL = (value) => {
+		const URLRegex =
+			'^(https?://)?(www\\.)?([-a-z0-9]{1,63}\\.)*?[a-z0-9][-a-z0-9]{0,61}[a-z0-9]\\.[a-z]{2,6}(/[-\\w@\\+\\.~#\\?&/=%]*)?$';
+		if (!value) {
+			setErrors({ ...errors, image: 'Must provide image URL' });
+		} else if (!new RegExp(URLRegex).test(value)) {
+			setErrors({ ...errors, image: 'Image must be a valid URL' });
 		} else {
-			setErrors({
-				...errors,
-				temperament: "Temperaments can't contain numbers",
-			});
+			setErrors({ ...errors, image: '' });
 		}
-		if (!form.temperament)
-			setErrors({ ...errors, temperament: 'Must provide temperaments' });
+	};
+
+	const validateNumericField = (value, fieldName) => {
+		if (!value || isNaN(value)) {
+			setErrors({ ...errors, [fieldName]: 'Must provide a valid number' });
+		} else {
+			setErrors({ ...errors, [fieldName]: '' });
+		}
 	};
 
 	const submitHandler = (event) => {
 		event.preventDefault();
 		const response = axios
 			.post('http://localhost:3001/dog', form)
-			.then((res) => alert(res))
+			.then((res) => alert(res.data))
 			.catch((err) => alert(err));
 		return response;
 	};
@@ -63,7 +73,7 @@ const Form = () => {
 		<div className={style.container}>
 			<form className={style.form}>
 				<div>
-					<label htmlFor=''>Name: </label>
+					<label htmlFor='name'>Name: </label>
 					<input
 						type='text'
 						value={form.name}
@@ -74,17 +84,18 @@ const Form = () => {
 				</div>
 
 				<div>
-					<label htmlFor=''>Image: </label>
+					<label htmlFor='image'>Image: </label>
 					<input
 						type='text'
 						value={form.image}
 						onChange={changeHandler}
 						name='image'
 					/>
+					<span>{errors.image}</span>
 				</div>
 
 				<div>
-					<label htmlFor=''>Temperament: </label>
+					<label htmlFor='temperament'>Temperament: </label>
 					<input
 						type='text'
 						value={form.temperament}
@@ -95,28 +106,45 @@ const Form = () => {
 				</div>
 
 				<div>
-					<label htmlFor=''>Height: </label>
+					<label htmlFor='height'>Height: </label>
 					<input
-						type='text'
+						type='number'
 						value={form.height}
-						onChange={changeHandler}
+						onChange={(event) => {
+							changeHandler(event);
+							validateNumericField(event.target.value, 'height');
+						}}
 						name='height'
 					/>
+					<span>{errors.height}</span>
 				</div>
 
 				<div>
-					<label htmlFor=''>Weight: </label>
+					<label htmlFor='weight'>Weight: </label>
 					<input
-						type='text'
+						type='number'
 						value={form.weight}
-						onChange={changeHandler}
+						onChange={(event) => {
+							changeHandler(event);
+							validateNumericField(event.target.value, 'weight');
+						}}
 						name='weight'
 					/>
+					<span>{errors.weight}</span>
 				</div>
 
 				<div>
-					<label htmlFor=''>Life Span: </label>
-					<input type='text' value={form.lifeSpan} name='lifeSpan' />
+					<label htmlFor='lifeSpan'>Life Span: </label>
+					<input
+						type='number'
+						value={form.lifeSpan}
+						onChange={(event) => {
+							changeHandler(event);
+							validateNumericField(event.target.value, 'lifeSpan');
+						}}
+						name='lifeSpan'
+					/>
+					<span>{errors.lifeSpan}</span>
 				</div>
 
 				<button type='submit' onClick={submitHandler}>

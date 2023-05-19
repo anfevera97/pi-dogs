@@ -1,8 +1,8 @@
-import { GET_DOGS, GET_DOG, SET_PAGE } from './actions';
+import { GET_DOGS, GET_DOG, SET_PAGE, CLEAR_DETAIL } from './actions';
 
 const initialState = {
 	dogs: [],
-	dogsDetail: {},
+	dogsDetail: [],
 	startPage: 1,
 	resultsXPage: 8,
 };
@@ -27,6 +27,11 @@ const rootReducer = (state = initialState, action) => {
 				startPage: action.payload,
 			};
 
+		case CLEAR_DETAIL:
+			return {
+				...state,
+				dogsDetail: {},
+			};
 		default:
 			return { ...state };
 	}
