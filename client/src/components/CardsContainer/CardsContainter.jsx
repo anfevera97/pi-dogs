@@ -3,8 +3,9 @@ import Card from '../DogCard/Card';
 import style from './CardsContainter.module.css';
 import { useSelector } from 'react-redux';
 
-const CardsContainter = ({ currentPage, resultsXPage, search }) => {
+const CardsContainter = ({ currentPage, resultsXPage }) => {
 	const dogs = useSelector((state) => state.dogs);
+	const search = useSelector((state) => state.filteredDogs);
 	const [page, setPage] = useState(currentPage);
 
 	const totalPages = Math.ceil(dogs.length / resultsXPage);
@@ -14,6 +15,14 @@ const CardsContainter = ({ currentPage, resultsXPage, search }) => {
 
 	const handlePageChange = (newPage) => {
 		setPage(newPage);
+	};
+
+	const sortAB = () => {
+		const alphabetical = [...currentResults].sort((a, b) =>
+			a.name.localeCompare(b.name),
+		);
+
+		return alphabetical;
 	};
 
 	const renderPageNumbers = () => {
@@ -49,6 +58,9 @@ const CardsContainter = ({ currentPage, resultsXPage, search }) => {
 				>
 					Next
 				</button>
+				<div>
+					<button onClick={sortAB}>Sort A to Z</button>
+				</div>
 			</div>
 			{search.length
 				? search.map((dog) => (

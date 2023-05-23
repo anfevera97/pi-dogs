@@ -5,6 +5,7 @@ import {
 	CLEAR_DETAIL,
 	SEARCH,
 	CLEAR_SEARCH,
+	GET_TEMPERAMENTS,
 } from './actions';
 
 const initialState = {
@@ -13,6 +14,7 @@ const initialState = {
 	startPage: 1,
 	resultsXPage: 8,
 	filteredDogs: [],
+	temperaments: [],
 };
 
 const rootReducer = (state = initialState, action) => {
@@ -51,6 +53,12 @@ const rootReducer = (state = initialState, action) => {
 			return {
 				...state,
 				filteredDogs: [],
+			};
+
+		case GET_TEMPERAMENTS:
+			return {
+				...state,
+				temperaments: action.payload,
 			};
 		default:
 			return { ...state };

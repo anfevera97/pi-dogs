@@ -1,4 +1,5 @@
 const { createDog } = require('../controllers/createDog');
+const { createTemperament } = require('../controllers/createTemperament');
 const { finalResult } = require('../controllers/getAllDogs');
 const getDogById = require('../controllers/getDogById');
 
@@ -38,16 +39,11 @@ const getDogByIdHandler = async (req, res) => {
 
 const createDogHandler = async (req, res) => {
 	try {
-		const { name, image, temperament, height, weight, lifeSpan } = req.body;
-		const newDog = await createDog(
-			name,
-			image,
-			temperament,
-			height,
-			weight,
-			lifeSpan,
-		);
-		res.status(200).json('creado exitosamente');
+		const { name, image, height, weight, lifeSpan, temperament } = req.body;
+		const temperamentData = await createTemperament(temperament);
+		const newDog = await createDog(name, image, height, weight, lifeSpan);
+
+		res.status(200).json({ newDog, temperamentData });
 	} catch (error) {
 		res.status(400).json({ error: error.message });
 	}

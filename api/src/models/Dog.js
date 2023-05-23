@@ -28,7 +28,7 @@ module.exports = (sequelize) => {
 			type: DataTypes.STRING,
 		},
 		created: {
-			type: DataTypes.JSON,
+			type: DataTypes.BOOLEAN,
 			defaultValue: true,
 		},
 	});

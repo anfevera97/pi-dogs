@@ -20,9 +20,9 @@ const Detail = () => {
 	return (
 		<div>
 			<p>Name: {dog?.name}</p>
-			<img src={dog?.image} alt={dog.name} className={style.img} />
+			<img src={dog?.image} alt='img not Found' className={style.img} />
 			<p>Temperament:</p>
-			<p>{dog.temperament}</p>
+			<p>{dog.temperaments}</p>
 			<p>Weight: {dog.weight} kg</p>
 			<p>Height: {dog.height} cm</p>
 			<p>Life Span: {dog.lifeSpan}</p>
