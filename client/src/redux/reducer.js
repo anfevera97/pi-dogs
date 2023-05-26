@@ -1,18 +1,18 @@
 import {
 	GET_DOGS,
 	GET_DOG,
-	SET_PAGE,
 	CLEAR_DETAIL,
 	SEARCH,
 	CLEAR_SEARCH,
 	GET_TEMPERAMENTS,
+	ORDER_BY_NAME,
+	FILTER_TEMPERAMENTS,
+	FILRTER_BY_SOURCE,
 } from './actions';
 
 const initialState = {
 	dogs: [],
-	dogsDetail: [],
-	startPage: 1,
-	resultsXPage: 8,
+	dogsDetail: {},
 	filteredDogs: [],
 	temperaments: [],
 };
@@ -29,12 +29,6 @@ const rootReducer = (state = initialState, action) => {
 			return {
 				...state,
 				dogsDetail: action.payload,
-			};
-
-		case SET_PAGE:
-			return {
-				...state,
-				startPage: action.payload,
 			};
 
 		case CLEAR_DETAIL:
@@ -60,6 +54,44 @@ const rootReducer = (state = initialState, action) => {
 				...state,
 				temperaments: action.payload,
 			};
+
+		case ORDER_BY_NAME:
+			const sortedName = [...state.dogs].sort((a, b) => {
+				return action.payload === 'A-Z'
+					? a.name.localeCompare(b.name)
+					: b.name.localeCompare(a.name);
+			});
+			return {
+				...state,
+				dogs: sortedName,
+			};
+
+		case FILTER_TEMPERAMENTS:
+			const filteredDogs =
+				action.payload === 'all'
+					? state.dogs
+					: state.dogs.filter(
+							(dog) =>
+								dog.temperaments &&
+								action.payload &&
+								dog.temperaments.includes(action.payload),
+					  );
+			return {
+				...state,
+				filteredDogs: filteredDogs,
+			};
+
+		case FILRTER_BY_SOURCE:
+			return {
+				...state,
+				filteredDogs:
+					action.payload === 'all'
+						? state.dogs
+						: state.dogs.filter((dog) =>
+								action.payload === 'API' ? !dog.created : dog.created,
+						  ),
+			};
+
 		default:
 			return { ...state };
 	}

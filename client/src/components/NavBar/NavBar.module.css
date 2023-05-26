@@ -3,11 +3,16 @@
 	top: 0;
 	left: 0.4%;
 	z-index: 1000;
-	background-color: #9b07bcfa;
+	background-color: blueviolet;
 	height: 30px;
 	width: 99%;
 	display: flex;
 	justify-content: space-around;
 	border-radius: 15px;
 	border: 1px solid black;
+}
+
+.link {
+	text-decoration: none;
+	color: black;
 }

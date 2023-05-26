@@ -1,4 +1,4 @@
-const { Dog, Temperaments } = require('../db');
+const { Dog, Temperament } = require('../db');
 const { getApiDogs } = require('./getAllDogs');
 
 const getDogById = async (dogId, source) => {
@@ -11,11 +11,14 @@ const getDogById = async (dogId, source) => {
 	} else {
 		const bddResponse = await Dog.findByPk(dogId, {
 			include: {
-				model: Temperaments,
+				model: Temperament,
 				attributes: ['name'],
 			},
 		});
-		const result = bddResponse;
+		const temperaments = bddResponse.temperaments.map(
+			(temperament) => temperament.name,
+		);
+		const result = { ...bddResponse.toJSON(), temperaments };
 		return result;
 	}
 };

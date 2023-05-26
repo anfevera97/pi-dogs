@@ -19,13 +19,12 @@
 //     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 const server = require('./src/app.js');
 const { conn } = require('./src/db.js');
-const { Temperament } = require('./src/controllers/temperamentController.js');
+const { Temperaments } = require('./src/controllers/temperamentController.js');
 
-// Syncing all the models at once.
-conn.sync({ force: true }).then(() => {
+conn.sync({ force: false }).then(() => {
 	server.listen(3001, () => {
-		Temperament();
-		console.log('listening at 3001'); // eslint-disable-line no-console
+		Temperaments();
+		console.log('listening at 3001');
 	});
 });
 

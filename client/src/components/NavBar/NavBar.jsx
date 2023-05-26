@@ -7,8 +7,12 @@ const NavBar = ({ value }) => {
 	return (
 		<div className={style.containter}>
 			<SearchBar query={value} />
-			<Link to='/home'>HOME</Link>
-			<Link to='/create'>FORM</Link>
+			<Link className={style.link} to='/home'>
+				HOME
+			</Link>
+			<Link className={style.link} to='/create'>
+				FORM
+			</Link>
 		</div>
 	);
 };

@@ -1,7 +1,7 @@
 const axios = require('axios');
 require('dotenv').config();
 const { API_URL } = process.env;
-const { Dog, Temperaments } = require('../db');
+const { Dog, Temperament } = require('../db');
 
 const getApiDogs = async () => {
 	const apiDogs = await axios.get(`${API_URL}`);
@@ -12,7 +12,7 @@ const getApiDogs = async () => {
 			image: data.image.url,
 			height: data.height.metric,
 			weight: data.weight.metric,
-			temperament: data.temperament,
+			temperaments: data.temperament,
 			lifeSpan: data.life_span,
 			created: false,
 		};
@@ -23,7 +23,8 @@ const getApiDogs = async () => {
 const getDogsDB = async () => {
 	const dogs = await Dog.findAll({
 		include: {
-			model: Temperaments,
+			model: Temperament,
+			attributes: ['name'],
 		},
 	});
 
@@ -35,10 +36,11 @@ const getDogsDB = async () => {
 			height: data.height,
 			weight: data.weight,
 			lifeSpan: data.lifeSpan,
+			temperaments: data.temperaments?.map((temp) => temp.name),
 			created: true,
 		};
 	});
-
+	console.log(results);
 	return results;
 };
 

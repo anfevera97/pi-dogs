@@ -8,6 +8,7 @@ const Detail = () => {
 	const dispatch = useDispatch();
 	const dog = useSelector((state) => state.dogsDetail);
 	const { id } = useParams();
+	console.log(dog);
 
 	useEffect(() => {
 		dispatch(getDogById(id));
@@ -18,14 +19,22 @@ const Detail = () => {
 	}, [id, dispatch]);
 
 	return (
-		<div>
+		<div className={style.container}>
 			<p>Name: {dog?.name}</p>
 			<img src={dog?.image} alt='img not Found' className={style.img} />
 			<p>Temperament:</p>
-			<p>{dog.temperaments}</p>
+			{Array.isArray(dog.temperaments) ? (
+				<p>{dog.temperaments.join(', ')}</p>
+			) : (
+				<p>{dog.temperaments}</p>
+			)}
 			<p>Weight: {dog.weight} kg</p>
 			<p>Height: {dog.height} cm</p>
-			<p>Life Span: {dog.lifeSpan}</p>
+			{isNaN(dog.id) ? (
+				<p>Life Span: {dog.lifeSpan} years </p>
+			) : (
+				<p>Life Span: {dog.lifeSpan}</p>
+			)}
 		</div>
 	);
 };

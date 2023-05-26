@@ -1,0 +1,14 @@
+.container {
+	margin-top: 100px;
+	background-color: blueviolet;
+	padding: 20px;
+	width: fit-content;
+	position: relative;
+	left: 40%;
+	border-radius: 15px;
+}
+.img {
+	width: 250px;
+	height: 300px;
+	object-fit: contain;
+}

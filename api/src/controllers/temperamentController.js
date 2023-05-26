@@ -1,18 +1,16 @@
-const { Temperaments } = require('../db');
+const { Temperament } = require('../db');
 require('dotenv').config();
 const { API_URL } = process.env;
 const axios = require('axios');
 
-const Temperament = async () => {
+const Temperaments = async () => {
 	const temps = await axios.get(API_URL);
-
 	for (const data of temps.data) {
 		if (data && data.temperament) {
 			const res = data.temperament.split(',');
-
 			for (const temperamentName of res) {
 				const trimmedNames = temperamentName.trim();
-				await Temperaments.findOrCreate({
+				await Temperament.findOrCreate({
 					where: {
 						name: trimmedNames,
 					},
@@ -20,8 +18,9 @@ const Temperament = async () => {
 			}
 		}
 	}
-	const result = await Temperaments.findAll();
+	const result = await Temperament.findAll();
+
 	return result;
 };
 
-module.exports = { Temperament };
+module.exports = { Temperaments };

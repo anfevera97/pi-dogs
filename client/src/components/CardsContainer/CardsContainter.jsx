@@ -1,28 +1,33 @@
 import { useState } from 'react';
 import Card from '../DogCard/Card';
 import style from './CardsContainter.module.css';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+	orderByName,
+	getFilterByTemper,
+	filterSource,
+} from '../../redux/actions';
 
-const CardsContainter = ({ currentPage, resultsXPage }) => {
+const CardsContainter = () => {
+	const dispatch = useDispatch();
 	const dogs = useSelector((state) => state.dogs);
 	const search = useSelector((state) => state.filteredDogs);
-	const [page, setPage] = useState(currentPage);
+	const temperaments = useSelector((state) => state.temperaments);
+	const [page, setPage] = useState(1);
+	const resultsXPage = 8;
 
-	const totalPages = Math.ceil(dogs.length / resultsXPage);
+	const totalPages = Math.ceil(
+		(search.length > 0 ? search : dogs).length / resultsXPage,
+	);
 	const startIndex = (page - 1) * resultsXPage;
 	const endIndex = startIndex + resultsXPage;
-	const currentResults = dogs.slice(startIndex, endIndex);
+	const currentResults = (search.length > 0 ? search : dogs).slice(
+		startIndex,
+		endIndex,
+	);
 
 	const handlePageChange = (newPage) => {
 		setPage(newPage);
-	};
-
-	const sortAB = () => {
-		const alphabetical = [...currentResults].sort((a, b) =>
-			a.name.localeCompare(b.name),
-		);
-
-		return alphabetical;
 	};
 
 	const renderPageNumbers = () => {
@@ -33,6 +38,7 @@ const CardsContainter = ({ currentPage, resultsXPage }) => {
 				<span
 					className={i === page ? style.activePage : style.pageNumber}
 					onClick={() => handlePageChange(i)}
+					key={i}
 				>
 					{i}
 				</span>,
@@ -42,51 +48,82 @@ const CardsContainter = ({ currentPage, resultsXPage }) => {
 		return pageNumbers;
 	};
 
+	const handleOrderByName = (e) => {
+		e.preventDefault();
+		dispatch(orderByName(e.target.value));
+	};
+
+	const handleFilterByTemperament = (e) => {
+		e.preventDefault();
+		dispatch(getFilterByTemper(e.target.value));
+	};
+
+	const handleFilterBddOrApi = (e) => {
+		dispatch(filterSource(e.target.value));
+	};
+
 	return (
 		<div className={style.container}>
-			<div className={style.pagContainter}>
-				<button
-					disabled={page === 1}
-					onClick={() => handlePageChange(page - 1)}
-				>
-					Prev
-				</button>
-				<div className={style.pageNumbersContainer}>{renderPageNumbers()}</div>
-				<button
-					disabled={page === totalPages}
-					onClick={() => handlePageChange(page + 1)}
-				>
-					Next
-				</button>
-				<div>
-					<button onClick={sortAB}>Sort A to Z</button>
+			<div>
+				<div className={style.pagContainter}>
+					<button
+						disabled={page === 1}
+						onClick={() => handlePageChange(page - 1)}
+					>
+						Prev
+					</button>
+					<div className={style.pageNumbersContainer}>
+						{renderPageNumbers()}
+					</div>
+					<button
+						disabled={page === totalPages}
+						onClick={() => handlePageChange(page + 1)}
+					>
+						Next
+					</button>
 				</div>
+
+				<div>
+					<select onChange={handleOrderByName}>
+						<option disabled defaultValue>
+							Alphabetical order
+						</option>
+						<option value='A-Z'>A-Z</option>
+						<option value='Z-A'>Z-A</option>
+					</select>
+				</div>
+
+				<select
+					onChange={handleFilterByTemperament}
+					className={style.temperaments}
+				>
+					<option disabled defaultValue>
+						Temperaments
+					</option>
+					<option value='all'>All</option>
+					{temperaments?.map((temp) => (
+						<option value={temp.name} key={temp.id}>
+							{temp.name}
+						</option>
+					))}
+				</select>
+				<select onChange={handleFilterBddOrApi}>
+					<option value='all'>ALL</option>
+					<option value='API'>API dogs</option>
+					<option value='BDD'>BDD dogs</option>
+				</select>
 			</div>
-			{search.length
-				? search.map((dog) => (
-						<div className={style.cardscontainer}>
-							<Card
-								key={dog.id}
-								id={dog.id}
-								image={dog.image}
-								name={dog.name}
-								temperament={dog.temperament}
-								weight={dog.weight}
-							/>
-						</div>
-				  ))
-				: currentResults.map((dog) => (
-						<div className={style.cardscontainer}>
-							<Card
-								key={dog.id}
-								id={dog.id}
-								image={dog.image}
-								name={dog.name}
-								temperament={dog.temperament}
-								weight={dog.weight}
-							/>
-						</div>
-				  ))}
+			{currentResults.map((dog) => (
+				<div className={style.cardscontainer} key={dog.id}>
+					<Card
+						id={dog.id}
+						image={dog.image}
+						name={dog.name}
+						temperaments={dog.temperaments}
+						weight={dog.weight}
+					/>
+				</div>
+			))}
 		</div>
 	);
 };
