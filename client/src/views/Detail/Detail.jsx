@@ -19,20 +19,29 @@ const Detail = () => {
 
 	return (
 		<div className={style.container}>
-			<p>Name: {dog?.name}</p>
+			<h1>Name: </h1>
+			<p>{dog?.name}</p>
 			<img src={dog?.image} alt='img not Found' className={style.img} />
-			<p>Temperament:</p>
+			<h3>Temperament:</h3>
 			{Array.isArray(dog.temperaments) ? (
 				<p>{dog.temperaments.join(', ')}</p>
 			) : (
 				<p>{dog.temperaments}</p>
 			)}
-			<p>Weight: {dog.weight} kg</p>
-			<p>Height: {dog.height} cm</p>
+			<h3>Weight:</h3>
+			<p>{dog.weight} kg</p>
+			<h3>Height:</h3>
+			<p>{dog.height} cm</p>
 			{isNaN(dog.id) ? (
-				<p>Life Span: {dog.lifeSpan} years </p>
+				<div>
+					<h3>Life Span:</h3>
+					<p>{dog.lifeSpan} years</p>
+				</div>
 			) : (
-				<p>Life Span: {dog.lifeSpan}</p>
+				<div>
+					<h3>Life Span:</h3>
+					<p>{dog.lifeSpan}</p>
+				</div>
 			)}
 		</div>
 	);

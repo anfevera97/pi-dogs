@@ -23,3 +23,13 @@ label {
 	margin-left: 10px;
 	margin-right: 8px;
 }
+
+.boton {
+	margin-top: 10px;
+	height: 40px;
+	width: 150px;
+}
+
+.boton:hover {
+	cursor: pointer;
+}

@@ -47,7 +47,7 @@ const createDogHandler = async (req, res) => {
 			temperament,
 		);
 
-		res.status(200).json(newDog);
+		res.status(200).json('Dog created');
 	} catch (error) {
 		res.status(400).json({ error: error.message });
 	}

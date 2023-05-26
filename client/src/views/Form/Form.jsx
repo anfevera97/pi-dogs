@@ -127,7 +127,16 @@ const Form = () => {
 		}
 	};
 
-	const submitHandler = async () => {
+	const submitHandler = async (event) => {
+		const hasErrors = Object.values(errors).some((error) => error !== '');
+		const isEmpty = Object.values(form).some((f) => f === '');
+
+		if (hasErrors || isEmpty) {
+			event.preventDefault();
+			alert('Please fix errors before submitting.');
+			return;
+		}
+
 		try {
 			const response = await axios.post('http://localhost:3001/dog', form);
 			alert(response.data);
@@ -238,7 +247,7 @@ const Form = () => {
 					<span>{errors.temperament}</span>
 				</div>
 
-				<button type='submit' onClick={submitHandler}>
+				<button type='submit' onClick={submitHandler} className={style.boton}>
 					Create Dog
 				</button>
 			</form>
