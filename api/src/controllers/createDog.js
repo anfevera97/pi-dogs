@@ -40,7 +40,7 @@ const createDog = async (
 	});
 
 	const cleanTemperaments = newDogWithTemperaments.temperaments.map(
-		(temperament) => temperament.name,
+		(temp) => temp.name,
 	);
 
 	console.log(cleanTemperaments);

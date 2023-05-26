@@ -61,7 +61,7 @@ export const onSearch = (query) => {
 				payload: response.data,
 			});
 		} catch (error) {
-			alert(error.message);
+			alert(`Dog ${query} not found`);
 		}
 	};
 };

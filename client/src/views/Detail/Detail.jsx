@@ -8,7 +8,6 @@ const Detail = () => {
 	const dispatch = useDispatch();
 	const dog = useSelector((state) => state.dogsDetail);
 	const { id } = useParams();
-	console.log(dog);
 
 	useEffect(() => {
 		dispatch(getDogById(id));

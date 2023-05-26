@@ -17,11 +17,11 @@ const CardsContainter = () => {
 	const resultsXPage = 8;
 
 	const totalPages = Math.ceil(
-		(search.length > 0 ? search : dogs).length / resultsXPage,
+		(search.length ? search : dogs).length / resultsXPage,
 	);
 	const startIndex = (page - 1) * resultsXPage;
 	const endIndex = startIndex + resultsXPage;
-	const currentResults = (search.length > 0 ? search : dogs).slice(
+	const currentResults = (search.length ? search : dogs).slice(
 		startIndex,
 		endIndex,
 	);

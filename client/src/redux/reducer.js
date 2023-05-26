@@ -63,7 +63,7 @@ const rootReducer = (state = initialState, action) => {
 			});
 			return {
 				...state,
-				dogs: sortedName,
+				filteredDogs: sortedName,
 			};
 
 		case FILTER_TEMPERAMENTS:
