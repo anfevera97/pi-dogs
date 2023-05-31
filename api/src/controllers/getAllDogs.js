@@ -40,7 +40,6 @@ const getDogsDB = async () => {
 			created: true,
 		};
 	});
-	console.log(results);
 	return results;
 };
 

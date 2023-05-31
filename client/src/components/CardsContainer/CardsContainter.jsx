@@ -6,6 +6,7 @@ import {
 	orderByName,
 	getFilterByTemper,
 	filterSource,
+	weightFilter,
 } from '../../redux/actions';
 
 const CardsContainter = () => {
@@ -49,22 +50,45 @@ const CardsContainter = () => {
 	};
 
 	const handleOrderByName = (e) => {
-		e.preventDefault();
 		dispatch(orderByName(e.target.value));
 	};
 
 	const handleFilterByTemperament = (e) => {
-		e.preventDefault();
 		dispatch(getFilterByTemper(e.target.value));
+		setPage(1);
 	};
 
 	const handleFilterBddOrApi = (e) => {
 		dispatch(filterSource(e.target.value));
+		setPage(1);
+	};
+
+	const handleFilterWeight = (e) => {
+		dispatch(weightFilter(e.target.value));
+		setPage(1);
+	};
+
+	const handleReset = () => {
+		setPage(1);
+		window.location.reload();
 	};
 
 	return (
-		<div className={style.container}>
-			<div>
+		<div>
+			<div className={style.container}>
+				{currentResults.map((dog) => (
+					<div className={style.cardscontainer} key={dog.id}>
+						<Card
+							id={dog.id}
+							image={dog.image}
+							name={dog.name}
+							temperaments={dog.temperaments}
+							weight={dog.weight}
+						/>
+					</div>
+				))}
+			</div>
+			<div className={style.filters}>
 				<div className={style.pagContainter}>
 					<button
 						disabled={page === 1}
@@ -82,48 +106,48 @@ const CardsContainter = () => {
 						Next
 					</button>
 				</div>
-
 				<div>
-					<select onChange={handleOrderByName}>
-						<option disabled defaultValue>
-							Alphabetical order
-						</option>
-						<option value='A-Z'>A-Z</option>
-						<option value='Z-A'>Z-A</option>
-					</select>
-				</div>
+					<div>
+						<select onChange={handleOrderByName}>
+							<option disabled defaultValue>
+								Alphabetical order
+							</option>
+							<option value='A-Z'>A-Z</option>
+							<option value='Z-A'>Z-A</option>
+						</select>
+					</div>
+					<div>
+						<select onChange={handleFilterWeight}>
+							<option disabled defaultValue>
+								weight
+							</option>
+							<option value='MinToMax'>lighter first</option>
+							<option value='MaxToMin'>heavier first</option>
+						</select>
+					</div>
 
-				<select
-					onChange={handleFilterByTemperament}
-					className={style.temperaments}
-				>
-					<option disabled defaultValue>
-						Temperaments
-					</option>
-					<option value='all'>All</option>
-					{temperaments?.map((temp) => (
-						<option value={temp.name} key={temp.id}>
-							{temp.name}
+					<select
+						onChange={handleFilterByTemperament}
+						className={style.temperaments}
+					>
+						<option disabled defaultValue>
+							Temperaments
 						</option>
-					))}
-				</select>
-				<select onChange={handleFilterBddOrApi}>
-					<option value='all'>ALL</option>
-					<option value='API'>API dogs</option>
-					<option value='BDD'>BDD dogs</option>
-				</select>
-			</div>
-			{currentResults.map((dog) => (
-				<div className={style.cardscontainer} key={dog.id}>
-					<Card
-						id={dog.id}
-						image={dog.image}
-						name={dog.name}
-						temperaments={dog.temperaments}
-						weight={dog.weight}
-					/>
+						<option value='all'>All</option>
+						{temperaments?.map((temp) => (
+							<option value={temp.name} key={temp.id}>
+								{temp.name}
+							</option>
+						))}
+					</select>
+					<select onChange={handleFilterBddOrApi}>
+						<option value='all'>ALL</option>
+						<option value='API'>API dogs</option>
+						<option value='BDD'>BDD dogs</option>
+					</select>
+					<button onClick={handleReset}>Reset Filters</button>
 				</div>
-			))}
+			</div>
 		</div>
 	);
 };

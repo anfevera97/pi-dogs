@@ -8,6 +8,7 @@ import {
 	ORDER_BY_NAME,
 	FILTER_TEMPERAMENTS,
 	FILRTER_BY_SOURCE,
+	WEIGHT_FILTER,
 } from './actions';
 
 const initialState = {
@@ -90,6 +91,49 @@ const rootReducer = (state = initialState, action) => {
 						: state.dogs.filter((dog) =>
 								action.payload === 'API' ? !dog.created : dog.created,
 						  ),
+			};
+
+		case WEIGHT_FILTER:
+			const filterweight = [...state.dogs];
+
+			const filter = filterweight.filter((dog) => {
+				if (dog.weight) {
+					const dogWeight = dog.weight.split('-').map(Number);
+					const dogAverage = (dogWeight[0] + dogWeight[1]) / 2;
+					return dogAverage;
+				}
+				return false;
+			});
+
+			if (action.payload === 'MinToMax') {
+				filter.sort((a, b) => {
+					const aAverage =
+						(a.weight.split('-').map(Number)[0] +
+							a.weight.split('-').map(Number)[1]) /
+						2;
+					const bAverage =
+						(b.weight.split('-').map(Number)[0] +
+							b.weight.split('-').map(Number)[1]) /
+						2;
+					return aAverage - bAverage;
+				});
+			} else {
+				filter.sort((a, b) => {
+					const aAverage =
+						(a.weight.split('-').map(Number)[0] +
+							a.weight.split('-').map(Number)[1]) /
+						2;
+					const bAverage =
+						(b.weight.split('-').map(Number)[0] +
+							b.weight.split('-').map(Number)[1]) /
+						2;
+					return bAverage - aAverage;
+				});
+			}
+
+			return {
+				...state,
+				filteredDogs: filter,
 			};
 
 		default:

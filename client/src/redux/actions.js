@@ -55,7 +55,6 @@ export const onSearch = (query) => {
 	return async function (dispatch) {
 		try {
 			const response = await axios.get(`${server}/dog?name=${query}`);
-			console.log(response);
 			dispatch({
 				type: SEARCH,
 				payload: response.data,
@@ -116,6 +115,15 @@ export const CHANGE_PAGE = 'CHANGE_PAGE';
 export const changePage = (payload) => {
 	return {
 		type: CHANGE_PAGE,
+		payload,
+	};
+};
+
+////////////////
+export const WEIGHT_FILTER = 'WEIGHT_FILTER';
+export const weightFilter = (payload) => {
+	return {
+		type: WEIGHT_FILTER,
 		payload,
 	};
 };

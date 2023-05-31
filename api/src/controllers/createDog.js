@@ -43,7 +43,6 @@ const createDog = async (
 		(temp) => temp.name,
 	);
 
-	console.log(cleanTemperaments);
 	return [{ newDog, temperament: cleanTemperaments }];
 };
 module.exports = { createDog };
